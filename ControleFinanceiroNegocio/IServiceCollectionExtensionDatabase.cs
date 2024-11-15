@@ -19,7 +19,10 @@ namespace ControleFinanceiro.Negocio
         {
             services.ConfigurarDatabase();
             services.AddScoped<IEntradaService, EntradaService>();
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(Entrada)));
+            services.AddScoped<IPeriodoService, PeriodoService>();
+            services.AddScoped<ITipoSaidaService, TipoSaidaService>();
+            services.AddScoped<ISaidaService, SaidaService>();
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(IServiceCollectionExtensionDatabase)));
         }
     }
 }

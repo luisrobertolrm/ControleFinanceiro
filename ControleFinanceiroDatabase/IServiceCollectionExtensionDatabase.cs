@@ -1,5 +1,6 @@
 ﻿using ControleFinanceiro.DataBase;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,10 @@ namespace ControleFinanceiro.Database
     {
         public static void ConfigurarDatabase(this IServiceCollection services)
         {
-            services.AddDbContext<ControleFinanceiroContext>(opt => opt.UseInMemoryDatabase("ControleFinanceiro"));
+            IConfiguration configuration = services.BuildServiceProvider().GetService<IConfiguration>();
+
+            //services.AddDbContext<ControleFinanceiroContext>(opt => opt.UseInMemoryDatabase("ControleFinanceiro"));
+            services.AddDbContext<ControleFinanceiroContext>(opt => opt.UseSqlite(configuration.GetConnectionString("controleFinanceiro")));
         }
     }
 }

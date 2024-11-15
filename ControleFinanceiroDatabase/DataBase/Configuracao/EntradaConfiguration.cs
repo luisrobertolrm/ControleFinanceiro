@@ -14,7 +14,11 @@ namespace ControleFinanceiro.DataBase.Configuracao
         public void Configure(EntityTypeBuilder<Entrada> builder)
         {
             builder.ToTable("Entrada");
-            builder.HasKey( s => s.ID );
+            builder.HasKey( s => s.Id );
+
+            builder.Property( s => s.Descricao).HasMaxLength(100);
+
+            builder.HasOne(s => s.TipoEntrada).WithMany(s => s.Entradas).HasForeignKey(s => s.IdTipoEntrada);
         }
 
     }

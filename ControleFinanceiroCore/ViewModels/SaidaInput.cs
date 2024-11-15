@@ -4,19 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControleFinanceiro.Core.Entity
+namespace ControleFinanceiro.Core.ViewModels
 {
-    public class Entrada
+    public class SaidaInput
     {
+        public SaidaInput()
+        {
+        }
+
         public int Id { get; set; }
-        public int IdTipoEntrada { get; set; }
         public string Descricao { get; set; }
         public int Ano { get; set; }
         public int Mes { get; set; }
         public DateTime Data { get; set; }
         public decimal Valor { get; set; }
-
-        public virtual TipoEntrada TipoEntrada { get; set; }
-        public virtual Periodo Periodo { get; set; }
+        public int IdTipoSaida { get; set; }
     }
 }

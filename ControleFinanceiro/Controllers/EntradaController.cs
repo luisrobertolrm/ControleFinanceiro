@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ControleFinanceiro.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class EntradaController : ControllerBase
     {
         private readonly IEntradaService _entradaServicio;

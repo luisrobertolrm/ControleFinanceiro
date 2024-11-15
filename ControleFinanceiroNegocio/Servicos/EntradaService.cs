@@ -2,6 +2,7 @@
 using ControleFinanceiro.Core.ViewModels;
 using ControleFinanceiro.DataBase;
 using ControleFinanceiro.Negocio.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,16 @@ namespace ControleFinanceiro.Negocio.Servicos
 
         public List<EntradaOutput> GetEntradas(int mes, int ano)
         {
-            return this._mapper.Map<List<EntradaOutput>>(this._contexto.Entrada);
+            var entradas = this._contexto.Entrada.Include(s => s.TipoEntrada).Where(s => s.Ano == ano && s.Mes == mes).ToList();
+
+            return this._mapper.Map<List<EntradaOutput>>(entradas);
+        }
+
+        public List<EntradaOutput> SalvarEntrada(int mes, int ano)
+        {
+            var entradas = this._contexto.Entrada.Include(s => s.TipoEntrada).Where(s => s.Ano == ano && s.Mes == mes).ToList();
+
+            return this._mapper.Map<List<EntradaOutput>>(entradas);
         }
     }
 }
