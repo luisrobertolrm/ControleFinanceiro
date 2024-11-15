@@ -15,6 +15,7 @@ namespace ControleFinanceiro.Negocio.Mapper
         {
             this.CreateMap<string, string>().ConvertUsing<StringToStringTypeConverter>();
 
+            this.CreateMap<EntradaInput, Entrada>();
             this.CreateMap<Entrada, EntradaOutput>()
                 .ForMember(s => s.Nome, cfg => cfg.MapFrom(src => src.TipoEntrada.Nome));
 

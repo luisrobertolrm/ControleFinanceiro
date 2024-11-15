@@ -9,6 +9,6 @@ namespace ControleFinanceiro.Negocio.Interface
 {
     public interface IEntradaService
     {
-        List<EntradaOutput> GetEntradas(int mes, int ano);
+        List<EntradaOutput> GetEntradas(int ano, int mes);
     }
 }

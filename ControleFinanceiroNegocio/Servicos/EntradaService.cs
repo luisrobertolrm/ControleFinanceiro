@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ControleFinanceiro.Core.Entity;
 using ControleFinanceiro.Core.ViewModels;
 using ControleFinanceiro.DataBase;
 using ControleFinanceiro.Negocio.Interface;
@@ -22,18 +23,44 @@ namespace ControleFinanceiro.Negocio.Servicos
             _mapper = mapper;
         }
 
-        public List<EntradaOutput> GetEntradas(int mes, int ano)
+        public List<EntradaOutput> GetEntradas(int ano, int mes)
         {
             var entradas = this._contexto.Entrada.Include(s => s.TipoEntrada).Where(s => s.Ano == ano && s.Mes == mes).ToList();
 
             return this._mapper.Map<List<EntradaOutput>>(entradas);
         }
 
-        public List<EntradaOutput> SalvarEntrada(int mes, int ano)
+        public List<EntradaOutput> SalvarEntrada(EntradaInput input)
         {
-            var entradas = this._contexto.Entrada.Include(s => s.TipoEntrada).Where(s => s.Ano == ano && s.Mes == mes).ToList();
+            var entrada = this._contexto.Entrada.Where(s => s.Ano == input.Ano && s.Mes == input.Mes).FirstOrDefault();
 
-            return this._mapper.Map<List<EntradaOutput>>(entradas);
+            if (entrada == null) 
+            {
+                entrada = this._mapper.Map<Entrada>(input);
+                this._contexto.Entrada.Add(entrada);
+            }
+            else
+                this._mapper.Map<EntradaInput, Entrada>(input, entrada);
+
+            this._contexto.SaveChanges();
+
+            return this.GetEntradas(input.Ano, input.Mes);
+        }
+
+        public List<EntradaOutput> ExcluirEntrada(EntradaInput input)
+        {
+            var entrada = this._contexto.Entrada.Where(s => s.Ano == input.Ano && s.Mes == input.Mes).FirstOrDefault();
+
+            if (entrada == null)
+            {
+                throw new ApplicationException("Entrada não encontrada");
+            }
+            else
+                this._mapper.Map<EntradaInput, Entrada>(input, entrada);
+
+            this._contexto.SaveChanges();
+
+            return this.GetEntradas(input.Ano, input.Mes);
         }
     }
 }

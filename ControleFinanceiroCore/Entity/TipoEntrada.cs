@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ControleFinanceiro.Core.Entity
 {
-    public class TipoEntrada
+    public class TipoEntrada : IAuditoria
     {
         public TipoEntrada()
         {
@@ -17,5 +17,7 @@ namespace ControleFinanceiro.Core.Entity
         public string Nome { get; set; }
 
         public virtual ICollection<Entrada> Entradas { get; set; }
+
+        public DateTime DataAlteracao { get; set; }
     }
 }

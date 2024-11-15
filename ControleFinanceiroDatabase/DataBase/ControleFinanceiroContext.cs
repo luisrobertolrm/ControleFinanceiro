@@ -14,6 +14,20 @@ namespace ControleFinanceiro.DataBase
 {
     public class ControleFinanceiroContext: DbContext
     {
+        public override int SaveChanges()
+        {
+            var entidadesCriadas = this.ChangeTracker
+               .Entries()
+               .Where(x => typeof(IAuditoria).IsAssignableFrom(x.Entity.GetType()) && (x.State == EntityState.Added || x.State == EntityState.Modified))
+               .ToList();
+
+            foreach (var item in entidadesCriadas)
+            {
+                (item as IAuditoria).DataAlteracao = DateTime.Now;
+            }
+
+            return base.SaveChanges();
+        }
 
         public ControleFinanceiroContext() : base()
         {

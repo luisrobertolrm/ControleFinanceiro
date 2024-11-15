@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ControleFinanceiro.Core.Entity
 {
-    public class Saida
+    public class Saida : IAuditoria
     {
         public Saida()
         {
@@ -21,8 +21,15 @@ namespace ControleFinanceiro.Core.Entity
         public decimal Valor { get; set; }
         public int IdTipoSaida { get; set; }
 
+        /// <summary>
+        /// O valor ainda vai estar disponível
+        /// </summary>
+        public DateTime? DataProjetada { get; set; }
+
         public virtual TipoSaida TipoSaida { get; set; }
         public virtual Periodo Periodo { get; set; }
         public virtual ICollection<SaidaItem> SaidasItem { get; set; }
+
+        public DateTime DataAlteracao { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ControleFinanceiro.Core.Entity
 {
-    public class TipoSaida
+    public class TipoSaida : IAuditoria
     {
         public TipoSaida()
         {
@@ -17,5 +17,7 @@ namespace ControleFinanceiro.Core.Entity
         public string Nome {  get; set; }
 
         public virtual ICollection<Saida> Saidas { get; set; }
+
+        public DateTime DataAlteracao { get; set; }
     }
 }

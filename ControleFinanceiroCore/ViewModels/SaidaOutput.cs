@@ -21,6 +21,27 @@ namespace ControleFinanceiro.Core.ViewModels
         public decimal Valor { get; set; }
         public int IdTipoSaida { get; set; }
 
+        /// <summary>
+        /// O valor ainda vai estar disponível
+        /// </summary>
+        public DateTime? DataProjetada { get; set; }
+
+
         public List<SaidaItemOutput> Itens { get; set; }
+    }
+
+    public class ControleMensal
+    {
+        public int Ano { get; set; }
+        public int Mes { get; set; }
+
+        public decimal TotalSaida { get; set; }
+        public decimal TotalEntrada { get; set; }
+        public decimal Consolidado { get; set; }
+
+        public decimal ValorProjetado { get; set; }
+        public decimal ConsolidadoProjetado { get; set; }
+
+        public List<SaidaOutput> Itens { get; set; }
     }
 }
