@@ -4,6 +4,7 @@ using ControleFinanceiro.Core.ViewModels;
 using ControleFinanceiro.DataBase;
 using ControleFinanceiro.Negocio.Interface;
 using Microsoft.EntityFrameworkCore;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace ControleFinanceiro.Negocio.Servicos
             return this._mapper.Map<List<EntradaOutput>>(entradas);
         }
 
+
         public List<EntradaOutput> SalvarEntrada(EntradaInput input)
         {
             var entrada = this._contexto.Entrada.Where(s => s.Ano == input.Ano && s.Mes == input.Mes).FirstOrDefault();
@@ -44,7 +46,7 @@ namespace ControleFinanceiro.Negocio.Servicos
 
             this._contexto.SaveChanges();
 
-            return this.GetEntradas(input.Ano, input.Mes);
+            return this.GetEntradas(input.Ano.Value, input.Mes.Value);
         }
 
         public List<EntradaOutput> ExcluirEntrada(EntradaInput input)
@@ -60,7 +62,7 @@ namespace ControleFinanceiro.Negocio.Servicos
 
             this._contexto.SaveChanges();
 
-            return this.GetEntradas(input.Ano, input.Mes);
+            return this.GetEntradas(input.Ano.Value, input.Mes.Value);
         }
     }
 }

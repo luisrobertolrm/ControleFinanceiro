@@ -8,12 +8,13 @@ namespace ControleFinanceiro.Core.ViewModels
 {
     public class EntradaInput
     {
-        public int Id { get; set; }
-        public int IdTipoEntrada { get; set; }
-        public int Ano { get; set; }
-        public int Mes { get; set; }
-        public string Descricao { get; set; }
-        public DateTime Data { get; set; }
-        public decimal Valor { get; set; }
+        public int? Id { get; set; }
+        public int? IdTipoEntrada { get; set; }
+        public int? Ano { get; set; }
+        public int? Mes { get; set; }
+        public string? Descricao { get; set; }
+        public DateTime? Data { get; set; }
+        public decimal? Valor { get; set; }
+        public DateTime? DataProjetada { get; set; }
     }
 }

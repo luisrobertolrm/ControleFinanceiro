@@ -42,7 +42,7 @@ namespace ControleFinanceiro.Negocio.Servicos
 
             this._contexto.SaveChanges();
 
-            var retorno = this.GetSaidas(input.Ano, input.Mes);
+            var retorno = this.GetSaidas(input.Ano.Value, input.Mes.Value);
 
             return this._mapper.Map<List<SaidaOutput>>(retorno);
         }
@@ -61,7 +61,7 @@ namespace ControleFinanceiro.Negocio.Servicos
 
             this._contexto.SaveChanges();
 
-            var retorno = this.GetSaidas(input.Ano, input.Mes);
+            var retorno = this.GetSaidas(input.Ano.Value, input.Mes.Value);
 
             return this._mapper.Map<List<SaidaOutput>>(retorno);
         }
