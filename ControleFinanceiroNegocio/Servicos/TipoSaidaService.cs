@@ -33,12 +33,7 @@ namespace ControleFinanceiro.Negocio.Servicos
         public TipoSaidaOutput SalvarSaida(TipoSaidaInput input)
         {
             TipoSaida saida = null;
-            int id = 0;
-
-            if (String.IsNullOrEmpty(input.Nome))
-            {
-                throw new ApplicationException("o Nome é obrigatório");
-            }
+            int id = 0;            
 
             if (input.Id.HasValue && input.Id.Value > 0)
             {
