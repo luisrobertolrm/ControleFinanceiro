@@ -1,6 +1,7 @@
 using ControleFinanceiro.Core.Entity;
 using ControleFinanceiro.Core.ViewModels;
 using ControleFinanceiro.Negocio.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControleFinanceiro.Controllers
@@ -17,6 +18,7 @@ namespace ControleFinanceiro.Controllers
         }
 
         [HttpGet("GetAll")]
+        [Authorize]
         public IEnumerable<TipoSaidaOutput> GetAll()
         {
             return this._saidaServicio.GetSaidas();
