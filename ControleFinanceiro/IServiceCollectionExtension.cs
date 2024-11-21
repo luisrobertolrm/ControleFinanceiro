@@ -92,48 +92,31 @@ namespace ControleFinanceiro.Negocio
              */
 
             //var authority = builder.Configuration.GetValue<string>("Authentication:Schemes:Bearer:ValidAuthority");
-            var audiences = new string[] { "localhost:7038", "localhost" };
-            var issuer = "localhost:7038";
 
-
-            services
-            .AddAuthorization(options =>
-            {
-                options.FallbackPolicy = new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireAuthenticatedUser()
-                    .Build();
-            })
-            .AddAuthentication(options =>
+            services.AddAuthentication( options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
             {
-                //options.Authority = authority;
-
-                var tokenValidationParameters = new TokenValidationParameters
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
+                    ValidIssuer = configuration["JwtConfig:Issuer"],
+                    ValidAudience = configuration["JwtConfig:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtConfig:Key"])),
                     ValidateIssuer = true,
-                    ValidateIssuerSigningKey = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero,
-                    ValidAudiences = audiences,
-                    ValidIssuer = issuer,
-                    RequireSignedTokens = true
+                    ValidateIssuerSigningKey = true
                 };
-                options.TokenValidationParameters = tokenValidationParameters;
+
             });
 
-            // Ativa o uso do token como forma de autorizar o acesso
-            // a recursos deste projeto
             services.AddAuthorization();
-
             
-
         }
 
         

@@ -1,4 +1,5 @@
-﻿using ControleFinanceiro.Core.ViewModels.Auth;
+﻿using AutoMapper;
+using ControleFinanceiro.Core.ViewModels.Auth;
 using ControleFinanceiro.Negocio;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -24,21 +25,26 @@ namespace ControleFinanceiro.Jwt
         public string CreateToken(User user)
         {
 
-            var handler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(AuthSettings.PrivateKey);
-            var credentials = new SigningCredentials(
-                new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha256Signature);
+            var issuer = this._configuration["JwtConfig:Issuer"];
+            var audience = this._configuration["JwtConfig:Audience"];
+            var key = this._configuration["JwtConfig:Key"];
+            var tokenValidityMins = this._configuration.GetValue<int>("JwtConfig:TokenValidityMins");
+            var tokenExpiryTimeStamp = DateTime.UtcNow.AddMinutes(tokenValidityMins);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = GenerateClaims(user),
-                Expires = DateTime.UtcNow.AddMinutes(15),
-                SigningCredentials = credentials,
+                Subject = new ClaimsIdentity( new[] { new Claim(JwtRegisteredClaimNames.Name, "Luis") }),
+                Expires = tokenExpiryTimeStamp,
+                Issuer = issuer,
+                Audience = audience,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)), SecurityAlgorithms.HmacSha512Signature)
             };
 
-            var token = handler.CreateToken(tokenDescriptor);
-            return handler.WriteToken(token);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+            var acessToken = tokenHandler.WriteToken(securityToken);
+
+            return acessToken;
         }
 
 
