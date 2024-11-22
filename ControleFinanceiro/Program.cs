@@ -16,29 +16,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    var jwtSecurityScheme = new OpenApiSecurityScheme
-    {
-        BearerFormat = "JWT",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = JwtBearerDefaults.AuthenticationScheme,
-        Description = "Enter your JWT Acess Token",
-        Reference = new OpenApiReference
-        {
-            Id = JwtBearerDefaults.AuthenticationScheme,
-            Type = ReferenceType.SecurityScheme
-        }
-    };
-
-
-    options.AddSecurityDefinition("Bearer", jwtSecurityScheme);
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement { { jwtSecurityScheme, Array.Empty<string>()} });
+    options.ConfigurarSwaggerBearer();
 });
 
-
 builder.Services.Configurar();
-
+builder.Services.ConfigurarAutenticacaoAutorizacao(); 
 
 
 var app = builder.Build();

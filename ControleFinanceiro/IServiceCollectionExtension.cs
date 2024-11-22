@@ -77,46 +77,6 @@ namespace ControleFinanceiro.Negocio
             services.AddScoped<TokenUtil, TokenUtil>(); 
             
             services.AddScoped<IValidator<EntradaInput>, EntradaInputValidator>();
-
-            var signingConfigurations = new SigningConfigurations();
-            var tokenConfigurations = new TokenConfigurations();
-            new ConfigureFromConfigurationOptions<TokenConfigurations>(
-                            configuration.GetSection("jwt"))
-                                .Configure(tokenConfigurations);
-
-            services.AddSingleton(signingConfigurations);
-            services.AddSingleton(tokenConfigurations);
-
-            /*
-             * Aqui é importante que nossos parâmetros de validação de token sejam os mesmos que adicionamos em nosso método "CreateToken", em nosso serviço de token
-             */
-
-            //var authority = builder.Configuration.GetValue<string>("Authentication:Schemes:Bearer:ValidAuthority");
-
-            services.AddAuthentication( options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-            {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = configuration["JwtConfig:Issuer"],
-                    ValidAudience = configuration["JwtConfig:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtConfig:Key"])),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true
-                };
-
-            });
-
-            services.AddAuthorization();
-            
         }
 
         
@@ -130,27 +90,5 @@ namespace ControleFinanceiro.Negocio
         }
     }
 
-    public class TokenConfigurations
-    {
-        public string Audience { get; set; }
-        public string Issuer { get; set; }
-        public int Seconds { get; set; }
-    }
-
-    public class SigningConfigurations
-    {
-        public SecurityKey Key { get; }
-        public SigningCredentials SigningCredentials { get; }
-
-        public SigningConfigurations()
-        {
-            using (var provider = new RSACryptoServiceProvider(2048))
-            {
-                Key = new RsaSecurityKey(provider.ExportParameters(true));
-            }
-
-            SigningCredentials = new SigningCredentials(
-                Key, SecurityAlgorithms.RsaSha256Signature);
-        }
-    }
+    
 }
