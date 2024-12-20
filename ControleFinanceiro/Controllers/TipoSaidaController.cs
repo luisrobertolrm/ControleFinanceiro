@@ -18,7 +18,6 @@ namespace ControleFinanceiro.Controllers
         }
 
         [HttpGet("GetAll")]
-        [Authorize]
         public IEnumerable<TipoSaidaOutput> GetAll()
         {
             return this._saidaServicio.GetSaidas();

@@ -23,7 +23,7 @@ namespace ControleFinanceiro.DataBase
 
             foreach (var item in entidadesCriadas)
             {
-                (item as IAuditoria).DataAlteracao = DateTime.Now;
+                (item.Entity as IAuditoria).DataAlteracao = DateTime.Now;
             }
 
             return base.SaveChanges();
